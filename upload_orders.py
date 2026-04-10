@@ -2,7 +2,7 @@ import requests
 import json
 import time
 
-API_KEY = "aYnq353mhsgFFRPowywaW1FWdHIn0GAl"  # вставь сюда свой ключ
+API_KEY = "aYnq353mhsgFFRPowywaW1FWdHIn0GAl"  
 CRM_URL = "https://uzakbaevadinara87.retailcrm.ru"
 
 with open("mock_orders.json", "r", encoding="utf-8") as f:

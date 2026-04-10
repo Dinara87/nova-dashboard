@@ -1,12 +1,12 @@
 import requests
 import json
 
-# === ВСТАВЬ СВОИ ДАННЫЕ ===
+# ===ДАННЫЕ ===
 API_KEY = "aYnq353mhsgFFRPowywaW1FWdHIn0GAl"
 CRM_URL = "https://uzakbaevadinara87.retailcrm.ru"
-SUPABASE_URL = "https://qkiubeqmdysqvleyeqtw.supabase.co"        # например https://xxxx.supabase.co
+SUPABASE_URL = "https://qkiubeqmdysqvleyeqtw.supabase.co"      
 SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFraXViZXFtZHlzcXZsZXllcXR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4MTQxODAsImV4cCI6MjA5MTM5MDE4MH0.m22tmU1_TF34kMIAI_CCwijz9tSlwKE_AaNfzrcHB-E"
-# ==========================
+
 
 # Получаем заказы из RetailCRM
 print("Получаем заказы из RetailCRM...")
