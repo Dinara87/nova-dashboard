@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Nova Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 20px; }
+    h1 { text-align: center; color: #333; }
+    .cards { display: flex; gap: 20px; justify-content: center; margin: 20px 0; }
+    .card { background: white; border-radius: 12px; padding: 20px 30px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .card h2 { margin: 0; font-size: 2em; color: #6c63ff; }
+    .card p { margin: 5px 0 0; color: #666; }
+    .chart-box { background: white; border-radius: 12px; padding: 20px; max-width: 800px; margin: 0 auto; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+  <h1>📦 Nova Orders Dashboard</h1>
+
+  <div class="cards">
+    <div class="card">
+      <h2 id="totalOrders">—</h2>
+      <p>Всего заказов</p>
+    </div>
+    <div class="card">
+      <h2 id="totalSum">—</h2>
+      <p>Общая сумма</p>
+    </div>
+    <div class="card">
+      <h2 id="avgSum">—</h2>
+      <p>Средний чек</p>
+    </div>
+  </div>
+
+  <div class="chart-box">
+    <canvas id="cityChart"></canvas>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://qkiubeqmdysqvleyeqtw.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFraXViZXFtZHlzcXZsZXllcXR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4MTQxODAsImV4cCI6MjA5MTM5MDE4MH0.m22tmU1_TF34kMIAI_CCwijz9tSlwKE_AaNfzrcHB-E";
+
+    async function loadData() {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/orders?select=*`, {
+        headers: {
+          "apikey": SUPABASE_KEY,
+          "Authorization": `Bearer ${SUPABASE_KEY}`
+        }
+      });
+      const orders = await res.json();
+
+      // Карточки
+      const total = orders.length;
+      const sum = orders.reduce((acc, o) => acc + Number(o.total_sum), 0);
+      const avg = Math.round(sum / total);
+
+      document.getElementById("totalOrders").textContent = total;
+      document.getElementById("totalSum").textContent = sum.toLocaleString() + " ₸";
+      document.getElementById("avgSum").textContent = avg.toLocaleString() + " ₸";
+
+      // График по городам
+      const cities = {};
+      orders.forEach(o => {
+        const city = o.city || "Неизвестно";
+        cities[city] = (cities[city] || 0) + 1;
+      });
+
+      new Chart(document.getElementById("cityChart"), {
+        type: "bar",
+        data: {
+          labels: Object.keys(cities),
+          datasets: [{
+            label: "Заказов по городам",
+            data: Object.values(cities),
+            backgroundColor: "#6c63ff"
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } }
+        }
+      });
+    }
+
+    loadData();
+  </script>
+</body>
+</html>
